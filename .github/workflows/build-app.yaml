@@ -16,10 +16,10 @@ jobs:
       build_matrix: ${{ steps.matrix.outputs.matrix }}
       image_name: ${{ steps.normalize.outputs.image_name }}
       registry_prefix: ${{ steps.normalize.outputs.registry_prefix }}
-      version: ${{ steps.info.outputs.version }}
-      name: ${{ steps.info.outputs.name }}
-      description: ${{ steps.info.outputs.description }}
-      url: ${{ steps.info.outputs.url }}
+      version: ${{ steps.normalize.outputs.version }}
+      name: ${{ steps.normalize.outputs.name }}
+      description: ${{ steps.normalize.outputs.description }}
+      url: ${{ steps.normalize.outputs.url }}
     steps:
       - uses: actions/checkout@v7.0.1
       - id: info
@@ -28,10 +28,26 @@ jobs:
           path: ./codex_cli
       - id: normalize
         shell: bash
+        env:
+          INFO_IMAGE: ${{ steps.info.outputs.image }}
+          INFO_VERSION: ${{ steps.info.outputs.version }}
+          INFO_NAME: ${{ steps.info.outputs.name }}
+          INFO_DESCRIPTION: ${{ steps.info.outputs.description }}
+          INFO_URL: ${{ steps.info.outputs.url }}
         run: |
-          image="${{ steps.info.outputs.image }}"
+          strip_quotes() {
+            local value="$1"
+            value="${value#\"}"
+            value="${value%\"}"
+            printf '%s' "$value"
+          }
+          image="$(strip_quotes "$INFO_IMAGE")"
           echo "image_name=${image##*/}" >> "$GITHUB_OUTPUT"
           echo "registry_prefix=${image%/*}" >> "$GITHUB_OUTPUT"
+          echo "version=$(strip_quotes "$INFO_VERSION")" >> "$GITHUB_OUTPUT"
+          echo "name=$(strip_quotes "$INFO_NAME")" >> "$GITHUB_OUTPUT"
+          echo "description=$(strip_quotes "$INFO_DESCRIPTION")" >> "$GITHUB_OUTPUT"
+          echo "url=$(strip_quotes "$INFO_URL")" >> "$GITHUB_OUTPUT"
       - id: matrix
         uses: home-assistant/builder/actions/prepare-multi-arch-matrix@2026.06.0
         with:

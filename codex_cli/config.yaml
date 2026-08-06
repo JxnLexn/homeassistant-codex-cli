@@ -8,7 +8,6 @@ arch:
   - amd64
 init: false
 startup: services
-boot: auto
 map:
   - homeassistant_config:rw
   - backup:rw

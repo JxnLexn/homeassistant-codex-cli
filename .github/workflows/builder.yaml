@@ -1,0 +1,29 @@
+name: Builder
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "codex_cli/**"
+      - ".github/workflows/build-app.yaml"
+      - ".github/workflows/builder.yaml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "codex_cli/**"
+      - ".github/workflows/build-app.yaml"
+      - ".github/workflows/builder.yaml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    uses: ./.github/workflows/build-app.yaml
+    with:
+      publish: ${{ github.event_name == 'push' }}
+    secrets: inherit

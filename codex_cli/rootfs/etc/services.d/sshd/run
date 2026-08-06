@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+
+bashio::log.info 'SSH-Dienst für Codex wird gestartet.'
+exec /usr/sbin/sshd -D -e

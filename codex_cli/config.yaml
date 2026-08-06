@@ -1,0 +1,29 @@
+name: Codex CLI
+version: "0.1.0"
+slug: codex_cli
+description: Codex CLI als sicherer SSH-Host für Home Assistant OS
+url: "https://github.com/JxnLexn/homeassistant-codex-cli/tree/main/codex_cli"
+arch:
+  - aarch64
+  - amd64
+init: false
+startup: services
+boot: auto
+map:
+  - homeassistant_config:rw
+  - backup:rw
+  - share:rw
+options:
+  authorized_keys: []
+  ha_mcp_url: ""
+  allow_tcp_forwarding: false
+schema:
+  authorized_keys:
+    - str
+  ha_mcp_url: str?
+  allow_tcp_forwarding: bool
+ports:
+  22/tcp: 2222
+ports_description:
+  22/tcp: SSH für die Codex-Desktop-App
+image: "ghcr.io/jxnlexn/homeassistant-codex-cli"

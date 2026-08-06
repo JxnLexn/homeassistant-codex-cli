@@ -2,8 +2,7 @@
 # shellcheck shell=bash
 set -euo pipefail
 
-if ! bashio::config.has_value 'authorized_keys' \
-    || [[ "$(bashio::config 'authorized_keys' | jq 'length')" -eq 0 ]]; then
+if ! bashio::config.has_value 'authorized_keys'; then
     bashio::exit.nok 'Mindestens ein öffentlicher SSH-Schlüssel ist erforderlich.'
 fi
 

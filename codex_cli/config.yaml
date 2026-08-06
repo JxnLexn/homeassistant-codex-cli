@@ -1,5 +1,5 @@
 name: Codex CLI
-version: "0.1.0"
+version: "0.1.1"
 slug: codex_cli
 description: Codex CLI als sicherer SSH-Host für Home Assistant OS
 url: "https://github.com/JxnLexn/homeassistant-codex-cli/tree/main/codex_cli"
